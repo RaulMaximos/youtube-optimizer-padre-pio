@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Otimizador de Conteúdo para YouTube - Padre Pio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header {
+            background-color: #6f42c1;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .card {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) ;
+        }
+        .card-header {
+            background-color: #6f42c1;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        .btn-primary {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        .btn-primary:hover {
+            background-color: #5a32a3;
+            border-color: #5a32a3;
+        }
+        .result-box {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+        .metric-badge {
+            background-color: #6f42c1;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px 0;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Otimizador de Conteúdo para YouTube - Padre Pio</h1>
+            <p>Versão Web - Desenvolvido para otimizar conteúdo para público feminino 65+</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Menu Principal
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <button class="btn btn-primary w-100" id="btn-titulos">1. Gerar apenas título otimizado</button>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button class="btn btn-primary w-100" id="btn-thumbnails">2. Gerar apenas sugestões para thumbnail</button>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button class="btn btn-primary w-100" id="btn-roteiro">3. Gerar roteiro completo</button>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button class="btn btn-primary w-100" id="btn-expandir">4. Expandir roteiro para áudio</button>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button class="btn btn-primary w-100" id="btn-descricao">5. Gerar apenas descrição e tags</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário para Títulos -->
+        <div class="row form-section" id="form-titulos" style="display: none;">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Gerar Títulos Otimizados
+                    </div>
+                    <div class="card-body">
+                        <form id="titulo-form">
+                            <div class="mb-3">
+                                <label for="tema-titulo" class="form-label">Tema Principal (deixe em branco para tema aleatório)</label>
+                                <input type="text" class="form-control" id="tema-titulo" placeholder="Ex: milagres, profecias, orações...">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gerar Títulos</button>
+                        </form>
+                        <div class="result-box" id="titulo-result">
+                            <h4>Títulos Otimizados (Ordenados por Potencial)</h4>
+                            <div id="titulos-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário para Thumbnails -->
+        <div class="row form-section" id="form-thumbnails" style="display: none;">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Gerar Sugestões para Thumbnail
+                    </div>
+                    <div class="card-body">
+                        <form id="thumbnail-form">
+                            <div class="mb-3">
+                                <label for="titulo-thumbnail" class="form-label">Título do Vídeo</label>
+                                <input type="text" class="form-control" id="titulo-thumbnail" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gerar Sugestões</button>
+                        </form>
+                        <div class="result-box" id="thumbnail-result">
+                            <h4>Sugestões para Thumbnail (Ordenadas por Potencial)</h4>
+                            <div id="thumbnails-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário para Roteiro Completo -->
+        <div class="row form-section" id="form-roteiro" style="display: none;">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Gerar Roteiro Completo
+                    </div>
+                    <div class="card-body">
+                        <form id="roteiro-form">
+                            <div class="mb-3">
+                                <label for="tema-roteiro" class="form-label">Tema Principal (deixe em branco para tema aleatório)</label>
+                                <input type="text" class="form-control" id="tema-roteiro" placeholder="Ex: milagres, profecias, orações...">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gerar Roteiro Completo</button>
+                        </form>
+                        <div class="result-box" id="roteiro-result">
+                            <h4>Roteiro Completo Gerado</h4>
+                            <div id="roteiro-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário para Expandir Roteiro -->
+        <div class="row form-section" id="form-expandir" style="display: none;">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Expandir Roteiro para Áudio
+                    </div>
+                    <div class="card-body">
+                        <form id="expandir-form">
+                            <div class="mb-3">
+                                <label for="estrutura-roteiro" class="form-label">Estrutura do Roteiro (formato JSON)</label>
+                                <textarea class="form-control" id="estrutura-roteiro" rows="5" required></textarea>
+                                <small class="form-text text-muted">Cole aqui a estrutura do roteiro em formato JSON.</small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tamanho-alvo" class="form-label">Tamanho Alvo por Capítulo (caracteres)</label>
+                                <input type="number" class="form-control" id="tamanho-alvo" value="3100">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Expandir Roteiro</button>
+                        </form>
+                        <div class="result-box" id="expandir-result">
+                            <h4>Roteiro Expandido</h4>
+                            <div id="expandir-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário para Descrição e Tags -->
+        <div class="row form-section" id="form-descricao" style="display: none;">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Gerar Descrição e Tags
+                    </div>
+                    <div class="card-body">
+                        <form id="descricao-form">
+                            <div class="mb-3">
+                                <label for="titulo-descricao" class="form-label">Título do Vídeo</label>
+                                <input type="text" class="form-control" id="titulo-descricao" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gerar Descrição e Tags</button>
+                        </form>
+                        <div class="result-box" id="descricao-result">
+                            <h4>Descrição e Tags Geradas</h4>
+                            <div id="descricao-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>Otimizador de Conteúdo para YouTube - Padre Pio &copy; 2025</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Funções para mostrar/ocultar formulários
+        document.getElementById('btn-titulos') .addEventListener('click', function() {
+            hideAllForms();
+            document.getElementById('form-titulos').style.display = 'block';
+        });
+
+        document.getElementById('btn-thumbnails').addEventListener('click', function() {
+            hideAllForms();
+            document.getElementById('form-thumbnails').style.display = 'block';
+        });
+
+        document.getElementById('btn-roteiro').addEventListener('click', function() {
+            hideAllForms();
+            document.getElementById('form-roteiro').style.display = 'block';
+        });
+
+        document.getElementById('btn-expandir').addEventListener('click', function() {
+            hideAllForms();
+            document.getElementById('form-expandir').style.display = 'block';
+        });
+
+        document.getElementById('btn-descricao').addEventListener('click', function() {
+            hideAllForms();
+            document.getElementById('form-descricao').style.display = 'block';
+        });
+
+        function hideAllForms() {
+            const forms = document.querySelectorAll('.form-section');
+            forms.forEach(form => {
+                form.style.display = 'none';
+            });
+        }
+
+        // Formulário de Títulos
+        document.getElementById('titulo-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const tema = document.getElementById('tema-titulo').value;
+            
+            fetch('/gerar_titulo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `tema=${encodeURIComponent(tema)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const container = document.getElementById('titulos-container');
+                    container.innerHTML = '';
+                    
+                    data.opcoes_titulos.forEach((opcao, index) => {
+                        const titulo = opcao.titulo;
+                        const metricas = opcao.metricas;
+                        
+                        const tituloDiv = document.createElement('div');
+                        tituloDiv.className = 'mb-4 p-3 bg-white rounded shadow-sm';
+                        
+                        tituloDiv.innerHTML = `
+                            <h5>${index + 1}. ${titulo}</h5>
+                            <div class="mt-2">
+                                <span class="metric-badge">📈 CTR estimado: ${(metricas.ctr * 100).toFixed(0)}%</span>
+                                <span class="metric-badge">📍 TAXA DE CLICK: ${(metricas.taxa_click * 100).toFixed(0)}%</span>
+                                <span class="metric-badge">👍 Engajamento: ${(metricas.engajamento * 100).toFixed(0)}%</span>
+                            </div>
+                        `;
+                        
+                        container.appendChild(tituloDiv);
+                    });
+                    
+                    document.getElementById('titulo-result').style.display = 'block';
+                } else {
+                    alert('Erro ao gerar títulos: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao processar a solicitação.');
+            });
+        });
+
+        // Adicione aqui os handlers para os outros formulários
+    </script>
+</body>
+</html>
