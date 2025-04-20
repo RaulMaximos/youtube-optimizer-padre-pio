@@ -1,0 +1,4 @@
+Flask==2.2.3
+Werkzeug==2.2.3
+colorama==0.4.6
+gunicorn==20.1.0
