@@ -28,5 +28,38 @@ Este guia explica como instalar a versão web do Otimizador de Conteúdo para Yo
 4. Clique em "Create"
 
 ## Passo 3: Instalar dependências
-
 1. Acesse sua conta via SSH:
+ssh username@seu_dominio.com
+2. Navegue até a pasta da aplicação:
+cd public_html/pasta_da_aplicacao
+3. Instale as dependências:
+pip install -r requirements.txt
+## Passo 4: Configurar passenger_wsgi.py
+
+1. Crie ou edite o arquivo `passenger_wsgi.py` na pasta da aplicação
+2. Adicione o seguinte conteúdo:
+
+python
+import sys, os
+
+INTERP = os.path.join(os.environ['HOME'], 'python-app', 'bin', 'python')
+if sys.executable != INTERP:
+    os.execl(INTERP, INTERP, *sys.argv)
+
+sys.path.append(os.getcwd())
+
+from app import app as application
+
+Passo 5: Reiniciar a aplicação
+No cPanel, volte para "Setup Python App"
+Encontre sua aplicação na lista
+Clique em "Restart"
+Passo 6: Acessar a aplicação
+Acesse sua aplicação através do URL configurado:
+https://seu_dominio.com/pasta_da_aplicacao
+Solução de problemas
+Se encontrar problemas, verifique:
+Logs de erro no cPanel (seção "Logs")
+Permissões de arquivos (todos os arquivos devem ter permissão 644 e diretórios 755)
+Versão do Python (deve ser compatível com as dependências)
+Para mais ajuda, entre em contato com o suporte da Hostgator.
